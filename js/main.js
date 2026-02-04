@@ -80,12 +80,12 @@ function initCountdown() {
 }
 
 /**
- * Gallery - 사진 갤러리 및 모달
+ * Gallery - 사진 갤러리 및 모달 (Carousel)
  */
 function initGallery() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     const modal = document.getElementById('galleryModal');
-    const modalImage = document.getElementById('modalImage');
+    const modalContent = modal.querySelector('.modal-content');
     const modalClose = document.getElementById('modalClose');
     const modalPrev = document.getElementById('modalPrev');
     const modalNext = document.getElementById('modalNext');
@@ -93,14 +93,39 @@ function initGallery() {
     const totalCountEl = document.getElementById('totalCount');
 
     let currentIndex = 0;
+    let isAnimating = false;
     const images = Array.from(galleryItems).map(item => item.querySelector('img').src);
 
     totalCountEl.textContent = images.length;
 
+    // 캐러셀 컨테이너 생성
+    function createCarousel() {
+        modalContent.innerHTML = `
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    ${images.map((src, i) => `<div class="carousel-slide"><img src="${src}" alt="웨딩 사진 ${i + 1}"></div>`).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    createCarousel();
+
+    const track = modalContent.querySelector('.carousel-track');
+
+    function updateCarousel(animate = true) {
+        if (animate) {
+            track.style.transition = 'transform 0.4s ease-out';
+        } else {
+            track.style.transition = 'none';
+        }
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        currentIndexEl.textContent = currentIndex + 1;
+    }
+
     function openModal(index) {
         currentIndex = index;
-        modalImage.src = images[currentIndex];
-        currentIndexEl.textContent = currentIndex + 1;
+        updateCarousel(false);
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -111,15 +136,19 @@ function initGallery() {
     }
 
     function showPrev() {
+        if (isAnimating) return;
+        isAnimating = true;
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        modalImage.src = images[currentIndex];
-        currentIndexEl.textContent = currentIndex + 1;
+        updateCarousel(true);
+        setTimeout(() => { isAnimating = false; }, 400);
     }
 
     function showNext() {
+        if (isAnimating) return;
+        isAnimating = true;
         currentIndex = (currentIndex + 1) % images.length;
-        modalImage.src = images[currentIndex];
-        currentIndexEl.textContent = currentIndex + 1;
+        updateCarousel(true);
+        setTimeout(() => { isAnimating = false; }, 400);
     }
 
     // Event listeners
