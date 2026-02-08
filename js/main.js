@@ -616,7 +616,6 @@ function showToast(message) {
 }
 
 /**
- * Kakao SDK 초기화 (카카오 공유용)
- * 실제 사용 시 아래 주석을 해제하고 본인의 JavaScript 키를 입력하세요
+ * Kakao SDK 초기화
  */
-// Kakao.init('YOUR_KAKAO_JAVASCRIPT_KEY');
+Kakao.init('c42100f6e39d0937558b38faf7eeaa0a');
