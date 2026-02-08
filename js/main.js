@@ -506,7 +506,7 @@ function initShareButtons() {
                 content: {
                     title: '희준 ♥ 영은 결혼합니다',
                     description: '2026년 3월 21일 토요일 낮 12시\n씨마크호텔 아산트리움',
-                    imageUrl: window.location.origin + '/images/main.jpg',
+                    imageUrl: 'https://heejunparkk.github.io/wedding-invitation/images/main.jpg',
                     link: {
                         mobileWebUrl: window.location.href,
                         webUrl: window.location.href
