@@ -750,21 +750,38 @@ button {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 1.5rem;
-    color: var(--color-white);
-    background: rgba(255, 255, 255, 0.1);
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
     border: none;
     cursor: pointer;
-    padding: 12px;
-    line-height: 1;
     border-radius: var(--radius-full);
     transition: var(--transition-default);
     z-index: 10;
 }
 
+.modal-close::before,
+.modal-close::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    background-color: #fff;
+    border-radius: 1px;
+}
+
+.modal-close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.modal-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .modal-close:hover {
-    color: var(--color-white);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
 }
 
