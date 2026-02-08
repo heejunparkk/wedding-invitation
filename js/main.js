@@ -5,6 +5,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all modules
+    initScrollProgress();
+    initPetals();
     initScrollAnimation();
     initCountdown();
     initGallery();
@@ -16,51 +18,135 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Scroll Animation - 스크롤 시 섹션 페이드인 효과
+ * Scroll Progress Bar - 스크롤 진행 표시
+ */
+function initScrollProgress() {
+    const progressBar = document.getElementById('scrollProgress');
+
+    function updateProgress() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+        progressBar.style.transform = `scaleX(${progress})`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+}
+
+/**
+ * Falling Petals - 떨어지는 꽃잎 애니메이션
+ */
+function initPetals() {
+    const container = document.getElementById('petalsContainer');
+    if (!container) return;
+
+    const petalCount = 8;
+
+    for (let i = 0; i < petalCount; i++) {
+        createPetal(container, i);
+    }
+}
+
+function createPetal(container, index) {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+
+    // 랜덤 위치 및 애니메이션 설정
+    const leftPos = Math.random() * 100;
+    const size = 10 + Math.random() * 12;
+    const duration = 8 + Math.random() * 6;
+    const delay = index * 1.2 + Math.random() * 2;
+    const swayAmount = 30 + Math.random() * 40;
+
+    petal.style.cssText = `
+        left: ${leftPos}%;
+        width: ${size}px;
+        height: ${size}px;
+        animation-duration: ${duration}s;
+        animation-delay: ${delay}s;
+        --sway: ${swayAmount}px;
+    `;
+
+    // 좌우 흔들림을 위한 추가 애니메이션
+    petal.style.animation = `petalFall ${duration}s linear ${delay}s infinite`;
+
+    container.appendChild(petal);
+}
+
+/**
+ * Scroll Animation - 컨텐츠 순차 등장 효과
  */
 function initScrollAnimation() {
-    const sections = document.querySelectorAll('.section');
-
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.15
+        rootMargin: '0px 0px -50px 0px',
+        threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    // 각 stagger-item을 개별적으로 관찰
+    const itemObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                // 해당 섹션 내의 모든 stagger-item 찾기
+                const section = entry.target.closest('.section');
+                if (section) {
+                    const items = section.querySelectorAll('.stagger-item:not(.visible)');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+
+                            // 텍스트 라인 애니메이션 처리
+                            const lines = item.querySelectorAll('.line-reveal');
+                            lines.forEach((line, lineIndex) => {
+                                setTimeout(() => {
+                                    line.classList.add('visible');
+                                }, lineIndex * 80);
+                            });
+                        }, index * 150);
+                    });
+                }
+                itemObserver.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
+    // 각 섹션의 첫 번째 stagger-item만 관찰 (트리거 역할)
+    const sections = document.querySelectorAll('.section');
     sections.forEach(section => {
-        // Cover는 이미 보이게 처리
-        if (section.classList.contains('cover')) {
-            section.classList.add('visible');
-        } else {
-            observer.observe(section);
+        const firstItem = section.querySelector('.stagger-item');
+        if (firstItem) {
+            itemObserver.observe(firstItem);
         }
     });
 }
 
 /**
- * D-day Countdown - 결혼식까지 남은 시간 표시
+ * D-day Countdown - 결혼식까지 남은 시간 표시 (Flip Animation)
  */
 function initCountdown() {
     const weddingDate = new Date('2026-03-21T12:00:00+09:00').getTime();
+    let prevValues = { days: -1, hours: -1, minutes: -1, seconds: -1 };
+
+    function flipNumber(element, newValue) {
+        element.classList.add('flip');
+        setTimeout(() => {
+            element.textContent = newValue;
+        }, 300);
+        setTimeout(() => {
+            element.classList.remove('flip');
+        }, 600);
+    }
 
     function updateCountdown() {
         const now = new Date().getTime();
         const distance = weddingDate - now;
 
         if (distance < 0) {
-            // 결혼식 날짜가 지났을 경우
             document.getElementById('days').textContent = '0';
-            document.getElementById('hours').textContent = '0';
-            document.getElementById('minutes').textContent = '0';
-            document.getElementById('seconds').textContent = '0';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
             return;
         }
 
@@ -69,10 +155,41 @@ function initCountdown() {
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        // Days - flip only when changed
+        if (prevValues.days !== days) {
+            if (prevValues.days !== -1) flipNumber(daysEl, days);
+            else daysEl.textContent = days;
+            prevValues.days = days;
+        }
+
+        // Hours
+        const hoursStr = hours.toString().padStart(2, '0');
+        if (prevValues.hours !== hours) {
+            if (prevValues.hours !== -1) flipNumber(hoursEl, hoursStr);
+            else hoursEl.textContent = hoursStr;
+            prevValues.hours = hours;
+        }
+
+        // Minutes
+        const minutesStr = minutes.toString().padStart(2, '0');
+        if (prevValues.minutes !== minutes) {
+            if (prevValues.minutes !== -1) flipNumber(minutesEl, minutesStr);
+            else minutesEl.textContent = minutesStr;
+            prevValues.minutes = minutes;
+        }
+
+        // Seconds - always flip
+        const secondsStr = seconds.toString().padStart(2, '0');
+        if (prevValues.seconds !== seconds) {
+            if (prevValues.seconds !== -1) flipNumber(secondsEl, secondsStr);
+            else secondsEl.textContent = secondsStr;
+            prevValues.seconds = seconds;
+        }
     }
 
     updateCountdown();
@@ -80,7 +197,7 @@ function initCountdown() {
 }
 
 /**
- * Gallery - 사진 갤러리 및 모달 (Carousel)
+ * Gallery - 사진 갤러리 및 모달 (Carousel) - 개선 버전
  */
 function initGallery() {
     const galleryItems = document.querySelectorAll('.gallery-item');
@@ -96,6 +213,12 @@ function initGallery() {
     let isAnimating = false;
     const images = Array.from(galleryItems).map(item => item.querySelector('img').src);
 
+    // 터치/드래그 관련 변수
+    let isDragging = false;
+    let startX = 0;
+    let currentX = 0;
+    let dragOffset = 0;
+
     totalCountEl.textContent = images.length;
 
     // 캐러셀 컨테이너 생성
@@ -103,7 +226,7 @@ function initGallery() {
         modalContent.innerHTML = `
             <div class="carousel-container">
                 <div class="carousel-track">
-                    ${images.map((src, i) => `<div class="carousel-slide"><img src="${src}" alt="웨딩 사진 ${i + 1}"></div>`).join('')}
+                    ${images.map((src, i) => `<div class="carousel-slide"><img src="${src}" alt="웨딩 사진 ${i + 1}" draggable="false"></div>`).join('')}
                 </div>
             </div>
         `;
@@ -112,94 +235,136 @@ function initGallery() {
     createCarousel();
 
     const track = modalContent.querySelector('.carousel-track');
+    const container = modalContent.querySelector('.carousel-container');
+
+    function getTranslateX() {
+        return -currentIndex * container.offsetWidth;
+    }
 
     function updateCarousel(animate = true) {
         if (animate) {
-            track.style.transition = 'transform 0.4s ease-out';
+            track.style.transition = 'transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
         } else {
             track.style.transition = 'none';
         }
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        track.style.transform = `translateX(${getTranslateX()}px)`;
         currentIndexEl.textContent = currentIndex + 1;
     }
 
     function openModal(index) {
         currentIndex = index;
-        updateCarousel(false);
+        modal.style.display = 'flex';
+        // 강제 리플로우 후 애니메이션 시작
+        modal.offsetHeight;
         modal.classList.add('active');
+        updateCarousel(false);
         document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
         modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
         document.body.style.overflow = '';
     }
 
     function showPrev() {
-        if (isAnimating) return;
+        if (isAnimating || currentIndex === 0) return;
         isAnimating = true;
-        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        currentIndex--;
         updateCarousel(true);
-        setTimeout(() => { isAnimating = false; }, 400);
+        setTimeout(() => { isAnimating = false; }, 350);
     }
 
     function showNext() {
-        if (isAnimating) return;
+        if (isAnimating || currentIndex === images.length - 1) return;
         isAnimating = true;
-        currentIndex = (currentIndex + 1) % images.length;
+        currentIndex++;
         updateCarousel(true);
-        setTimeout(() => { isAnimating = false; }, 400);
+        setTimeout(() => { isAnimating = false; }, 350);
     }
 
-    // Event listeners
+    // 드래그 시작
+    function handleDragStart(e) {
+        if (isAnimating) return;
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        track.style.transition = 'none';
+    }
+
+    // 드래그 중
+    function handleDragMove(e) {
+        if (!isDragging) return;
+        currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        dragOffset = currentX - startX;
+
+        // 경계 저항 효과
+        const baseTranslate = getTranslateX();
+        let newTranslate = baseTranslate + dragOffset;
+
+        // 첫/마지막 슬라이드에서 저항 효과
+        if ((currentIndex === 0 && dragOffset > 0) ||
+            (currentIndex === images.length - 1 && dragOffset < 0)) {
+            dragOffset = dragOffset * 0.3;
+            newTranslate = baseTranslate + dragOffset;
+        }
+
+        track.style.transform = `translateX(${newTranslate}px)`;
+    }
+
+    // 드래그 종료
+    function handleDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+
+        const threshold = container.offsetWidth * 0.2;
+
+        if (dragOffset < -threshold && currentIndex < images.length - 1) {
+            currentIndex++;
+        } else if (dragOffset > threshold && currentIndex > 0) {
+            currentIndex--;
+        }
+
+        dragOffset = 0;
+        updateCarousel(true);
+    }
+
+    // Event listeners - 갤러리 아이템 클릭
     galleryItems.forEach((item, index) => {
         item.addEventListener('click', () => openModal(index));
     });
 
+    // 모달 버튼
     modalClose.addEventListener('click', closeModal);
     modalPrev.addEventListener('click', showPrev);
     modalNext.addEventListener('click', showNext);
 
+    // 모달 배경 클릭
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal();
         }
     });
 
-    // Keyboard navigation
+    // 키보드 네비게이션
     document.addEventListener('keydown', (e) => {
         if (!modal.classList.contains('active')) return;
-
         if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowLeft') showPrev();
         if (e.key === 'ArrowRight') showNext();
     });
 
-    // Touch swipe support
-    let touchStartX = 0;
-    let touchEndX = 0;
+    // 터치 이벤트
+    container.addEventListener('touchstart', handleDragStart, { passive: true });
+    container.addEventListener('touchmove', handleDragMove, { passive: true });
+    container.addEventListener('touchend', handleDragEnd);
 
-    modal.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    modal.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
-
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                showNext();
-            } else {
-                showPrev();
-            }
-        }
-    }
+    // 마우스 드래그 이벤트
+    container.addEventListener('mousedown', handleDragStart);
+    container.addEventListener('mousemove', handleDragMove);
+    container.addEventListener('mouseup', handleDragEnd);
+    container.addEventListener('mouseleave', handleDragEnd);
 }
 
 /**
@@ -266,33 +431,63 @@ function initMusicControl() {
     const musicBtn = document.getElementById('musicBtn');
     const bgMusic = document.getElementById('bgMusic');
     let isPlaying = false;
+    let hasUserInteracted = false;
 
-    // 배경음악 파일이 있을 경우에만 자동재생 시도
-    bgMusic.addEventListener('canplaythrough', () => {
-        // 자동재생 시도 (브라우저 정책에 따라 차단될 수 있음)
+    // 음악 재생 함수
+    function playMusic() {
+        bgMusic.volume = 0.5; // 볼륨 설정
         const playPromise = bgMusic.play();
-
         if (playPromise !== undefined) {
             playPromise.then(() => {
                 isPlaying = true;
                 musicBtn.classList.remove('paused');
-            }).catch(() => {
-                // 자동재생 차단됨 - 사용자 인터랙션 필요
+                console.log('Music playing');
+            }).catch((error) => {
                 isPlaying = false;
                 musicBtn.classList.add('paused');
+                console.log('Music play failed:', error.message);
             });
         }
-    });
+    }
 
-    musicBtn.addEventListener('click', () => {
+    // 첫 사용자 인터랙션 시 자동재생 (모바일 브라우저 정책 대응)
+    function handleFirstInteraction(e) {
+        if (hasUserInteracted) return;
+
+        // 음악 버튼 클릭은 별도 처리
+        if (e.target === musicBtn || musicBtn.contains(e.target)) return;
+
+        hasUserInteracted = true;
+        playMusic();
+
+        // 모든 이벤트 리스너 제거
+        document.removeEventListener('click', handleFirstInteraction, true);
+        document.removeEventListener('touchstart', handleFirstInteraction, true);
+        document.removeEventListener('scroll', handleFirstInteraction, true);
+    }
+
+    // 다양한 인터랙션에 대응 (capture: true로 이벤트 캡처 단계에서 처리)
+    document.addEventListener('click', handleFirstInteraction, true);
+    document.addEventListener('touchstart', handleFirstInteraction, true);
+    document.addEventListener('scroll', handleFirstInteraction, true);
+
+    // 음악 버튼 클릭
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hasUserInteracted = true;
+
         if (isPlaying) {
             bgMusic.pause();
             musicBtn.classList.add('paused');
+            isPlaying = false;
         } else {
-            bgMusic.play();
-            musicBtn.classList.remove('paused');
+            playMusic();
         }
-        isPlaying = !isPlaying;
+    });
+
+    // 오디오 로드 에러 처리
+    bgMusic.addEventListener('error', (e) => {
+        console.error('Audio load error:', e);
     });
 }
 
@@ -353,40 +548,53 @@ function initShareButtons() {
 }
 
 /**
- * Kakao Map - 카카오맵 표시
+ * Naver Map - 네이버 지도 표시
  */
 function initKakaoMap() {
     const mapContainer = document.getElementById('map');
 
-    // 카카오맵 API가 로드되었는지 확인
-    if (typeof kakao !== 'undefined' && kakao.maps) {
-        const mapOption = {
-            center: new kakao.maps.LatLng(37.7896, 128.9207), // 씨마크호텔 좌표
-            level: 3
+    console.log('Naver Maps API check:', typeof naver, naver?.maps);
+
+    // 네이버 지도 API가 로드되었는지 확인
+    if (typeof naver !== 'undefined' && naver.maps) {
+        const mapOptions = {
+            center: new naver.maps.LatLng(37.7980351, 128.9151714), // 씨마크호텔 좌표
+            zoom: 16,
+            zoomControl: true,
+            zoomControlOptions: {
+                position: naver.maps.Position.TOP_RIGHT
+            }
         };
 
-        const map = new kakao.maps.Map(mapContainer, mapOption);
+        const map = new naver.maps.Map(mapContainer, mapOptions);
 
         // 마커 생성
-        const markerPosition = new kakao.maps.LatLng(37.7896, 128.9207);
-        const marker = new kakao.maps.Marker({
-            position: markerPosition
+        const marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.7980351, 128.9151714),
+            map: map
         });
-        marker.setMap(map);
 
         // 인포윈도우
-        const infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="padding:5px;font-size:12px;text-align:center;">씨마크호텔<br>아산트리움</div>'
+        const infowindow = new naver.maps.InfoWindow({
+            content: '<div style="padding:10px 15px;font-size:13px;text-align:center;line-height:1.5;background:#fff;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);">씨마크호텔<br><span style="color:#9c8b7a;font-size:12px;">아산트리움</span></div>',
+            borderWidth: 0,
+            backgroundColor: 'transparent',
+            anchorSize: new naver.maps.Size(0, 0)
         });
         infowindow.open(map, marker);
 
-        // 지도 컨트롤 추가
-        const zoomControl = new kakao.maps.ZoomControl();
-        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+        // 마커 클릭 시 인포윈도우 토글
+        naver.maps.Event.addListener(marker, 'click', function() {
+            if (infowindow.getMap()) {
+                infowindow.close();
+            } else {
+                infowindow.open(map, marker);
+            }
+        });
     } else {
-        // 카카오맵 API가 없을 경우 대체 이미지 표시
+        // 네이버 지도 API가 없을 경우 대체 이미지 표시
         mapContainer.innerHTML = `
-            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f3ef;color:#6b6b6b;font-size:0.85rem;">
+            <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#f5f3ef;color:#6b6b6b;font-size:0.85rem;text-align:center;line-height:1.6;">
                 지도를 불러올 수 없습니다.<br>
                 아래 버튼을 이용해주세요.
             </div>
