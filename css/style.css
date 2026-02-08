@@ -758,26 +758,9 @@ button {
     border-radius: var(--radius-full);
     transition: var(--transition-default);
     z-index: 10;
-}
-
-.modal-close::before,
-.modal-close::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 18px;
-    height: 2px;
-    background-color: #fff;
-    border-radius: 1px;
-}
-
-.modal-close::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.modal-close::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-close:hover {
