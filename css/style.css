@@ -86,6 +86,8 @@ button {
 
 /* Section Base */
 .section {
+    position: relative;
+    z-index: 1;
     padding: var(--spacing-xxl) var(--spacing-md);
 }
 
@@ -253,9 +255,9 @@ button {
     overflow: hidden;
 }
 
-/* Cover Background Image */
+/* Fixed Background Image */
 .cover-bg-fixed {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -264,7 +266,7 @@ button {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: 0;
+    z-index: -1;
 }
 
 .cover-overlay {
