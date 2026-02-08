@@ -456,13 +456,22 @@ button {
 }
 
 .parent-name {
+    font-weight: 500;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+}
+
+.relation {
+    font-size: 0.82rem;
     color: var(--color-text-light);
+    font-weight: 300;
 }
 
 .child-name {
     font-weight: 500;
     color: var(--color-primary);
-    font-size: 1rem;
+    font-size: 1.05rem;
+    margin-left: 4px;
 }
 
 .deceased {
