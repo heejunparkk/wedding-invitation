@@ -253,9 +253,9 @@ button {
     overflow: hidden;
 }
 
-/* Fixed Background Image */
+/* Cover Background Image */
 .cover-bg-fixed {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -264,7 +264,7 @@ button {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 0;
 }
 
 .cover-overlay {
