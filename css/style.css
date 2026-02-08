@@ -1197,8 +1197,10 @@ button {
     right: 0;
     bottom: 0;
     background-image: url('../images/gallery-11.jpg');
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
+    background-color: #fff;
     z-index: 0;
 }
 
