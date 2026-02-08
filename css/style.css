@@ -476,11 +476,11 @@ button {
 
 .deceased {
     display: inline-block;
-    width: 13px;
-    height: 13px;
+    width: 15px;
+    height: 15px;
     margin-right: 3px;
     vertical-align: middle;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='10' fill='%23e8dcc8'/%3E%3Cellipse cx='50' cy='20' rx='6' ry='18' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='50' cy='80' rx='6' ry='18' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='20' cy='50' rx='18' ry='6' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='80' cy='50' rx='18' ry='6' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='29' cy='29' rx='6' ry='16' transform='rotate(-45 29 29)' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='71' cy='29' rx='6' ry='16' transform='rotate(45 71 29)' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='29' cy='71' rx='6' ry='16' transform='rotate(45 29 71)' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3Cellipse cx='71' cy='71' rx='6' ry='16' transform='rotate(-45 71 71)' fill='%23f5f0e8' stroke='%23d4c9b8' stroke-width='1'/%3E%3C/svg%3E");
+    background-image: url('../icons/flower.png');
     background-size: contain;
     background-repeat: no-repeat;
 }
