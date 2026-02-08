@@ -504,9 +504,11 @@ function initShareButtons() {
             Kakao.Share.sendDefault({
                 objectType: 'feed',
                 content: {
-                    title: '희준 ♥ 영은 결혼합니다',
-                    description: '2026년 3월 21일 토요일 낮 12시\n씨마크호텔 아산트리움',
+                    title: '박희준 ♥ 김영은 결혼합니다.',
+                    description: '3월 21일 (토) 낮 12시\n씨마크호텔 , 2F, 바다홀',
                     imageUrl: 'https://heejunparkk.github.io/wedding-invitation/images/main.jpg',
+                    imageWidth: 793,
+                    imageHeight: 990,
                     link: {
                         mobileWebUrl: window.location.href,
                         webUrl: window.location.href
@@ -514,10 +516,17 @@ function initShareButtons() {
                 },
                 buttons: [
                     {
-                        title: '청첩장 보기',
+                        title: '모바일청첩장',
                         link: {
                             mobileWebUrl: window.location.href,
                             webUrl: window.location.href
+                        }
+                    },
+                    {
+                        title: '위치보기',
+                        link: {
+                            mobileWebUrl: 'https://map.naver.com/v5/search/강원특별자치도%20강릉시%20해안로406번길%202',
+                            webUrl: 'https://map.naver.com/v5/search/강원특별자치도%20강릉시%20해안로406번길%202'
                         }
                     }
                 ]
