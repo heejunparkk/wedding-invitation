@@ -618,4 +618,4 @@ function showToast(message) {
 /**
  * Kakao SDK 초기화
  */
-Kakao.init('c42100f6e39d0937558b38faf7eeaa0a');
+Kakao.init('269a76adc9d3e077637c03ffee7f4cd8');
