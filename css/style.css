@@ -1356,15 +1356,6 @@ button {
         gap: 6px;
     }
 
-    .contact-container {
-        flex-direction: row;
-    }
-
-    .contact-divider {
-        width: 1px;
-        height: auto;
-    }
-
     .share-buttons {
         flex-direction: row;
     }
