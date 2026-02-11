@@ -3,6 +3,12 @@
  * 희준 & 영은 결혼식 모바일 청첩장
  */
 
+// 모바일 뷰포트 높이 고정 (주소창 변화에 의한 레이아웃 흔들림 방지)
+(function fixViewportHeight() {
+    var vh = window.innerHeight;
+    document.documentElement.style.setProperty('--vh', vh + 'px');
+})();
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all modules
     initScrollProgress();

@@ -249,7 +249,7 @@ button {
    ===================================================== */
 .cover {
     height: 100vh;
-    height: 100dvh;
+    height: var(--vh, 100vh);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -268,12 +268,13 @@ button {
     transform: translateX(-50%);
     width: 100%;
     max-width: 480px;
-    height: 100svh;
+    height: var(--vh, 100vh);
     background-image: url('../images/main.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     z-index: 0;
+    will-change: transform;
 }
 
 .cover-overlay {
@@ -1402,7 +1403,7 @@ button {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: var(--vh, 100vh);
     overflow: hidden;
     pointer-events: none;
     z-index: 100;
@@ -1445,7 +1446,7 @@ button {
     }
     100% {
         opacity: 0;
-        transform: translateY(100svh) translateX(50px) rotate(360deg) scale(0.6);
+        transform: translateY(var(--vh, 100vh)) translateX(50px) rotate(360deg) scale(0.6);
     }
 }
 
