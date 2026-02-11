@@ -454,7 +454,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 0;
     margin-bottom: var(--spacing-sm);
     font-size: 0.9rem;
     font-weight: 400;
@@ -471,6 +471,8 @@ button {
     color: var(--color-primary);
     font-size: 0.95rem;
     white-space: nowrap;
+    width: 130px;
+    text-align: center;
 }
 
 .relation {
@@ -478,6 +480,8 @@ button {
     color: var(--color-text-light);
     font-weight: 300;
     white-space: nowrap;
+    width: 45px;
+    text-align: center;
 }
 
 .child-name {
@@ -485,6 +489,8 @@ button {
     color: var(--color-primary);
     font-size: 1.05rem;
     white-space: nowrap;
+    width: 55px;
+    text-align: center;
 }
 
 .deceased-spacer {
