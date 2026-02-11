@@ -471,8 +471,6 @@ button {
     color: var(--color-primary);
     font-size: 0.95rem;
     white-space: nowrap;
-    width: 130px;
-    text-align: center;
 }
 
 .relation {
@@ -480,8 +478,7 @@ button {
     color: var(--color-text-light);
     font-weight: 300;
     white-space: nowrap;
-    width: 45px;
-    text-align: center;
+    margin: 0 6px;
 }
 
 .child-name {
@@ -489,22 +486,20 @@ button {
     color: var(--color-primary);
     font-size: 1.05rem;
     white-space: nowrap;
-    width: 55px;
-    text-align: center;
 }
 
 .deceased-spacer {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: 14px;
     flex-shrink: 0;
 }
 
 .deceased {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     flex-shrink: 0;
+    margin-right: 2px;
     background-image: url('../icons/flower.png');
     background-size: contain;
     background-repeat: no-repeat;
