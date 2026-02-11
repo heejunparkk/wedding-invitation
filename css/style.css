@@ -258,20 +258,18 @@ button {
     overflow: hidden;
 }
 
-/* Fixed Background Image */
+/* Cover Background Image */
 .cover-bg-fixed {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
     width: 100%;
-    max-width: 480px;
     height: 100%;
     background-image: url('../images/main.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    z-index: -1;
+    z-index: 0;
 }
 
 .cover-overlay {
@@ -280,6 +278,7 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
+    z-index: 1;
     background: linear-gradient(
         to bottom,
         rgba(255, 255, 255, 0.1) 0%,
