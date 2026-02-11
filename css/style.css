@@ -909,10 +909,23 @@ button {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.venue-tel {
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.tel-link {
+    font-size: 0.82rem;
+    color: var(--color-secondary);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+}
+
 .traffic-info {
     background-color: var(--color-bg);
     padding: var(--spacing-md);
     border-radius: var(--radius-lg);
+    margin-top: var(--spacing-md);
 }
 
 .traffic-item {
@@ -935,6 +948,11 @@ button {
     font-weight: 400;
     color: var(--color-text);
     line-height: 1.7;
+}
+
+.traffic-note {
+    font-size: 0.7rem;
+    color: var(--color-secondary);
 }
 
 /* =====================================================
