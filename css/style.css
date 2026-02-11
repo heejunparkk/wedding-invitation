@@ -1289,16 +1289,6 @@ button {
         font-size: 16px;
     }
 
-    .cover-names .groom-name,
-    .cover-names .bride-name {
-        font-size: 2rem;
-    }
-
-    .cover-names .ampersand {
-        font-size: 1.1rem;
-        margin: 0 var(--spacing-md);
-    }
-
     .countdown-item {
         min-width: 48px;
         padding: 0.75rem 0.5rem;
@@ -1312,11 +1302,6 @@ button {
 
     .section-inner {
         max-width: 520px;
-    }
-
-    .cover-names .groom-name,
-    .cover-names .bride-name {
-        font-size: 3rem;
     }
 
     .gallery-grid {
