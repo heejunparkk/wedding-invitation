@@ -450,6 +450,10 @@ button {
 }
 
 .parents-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     margin-bottom: var(--spacing-sm);
     font-size: 0.9rem;
     font-weight: 400;
@@ -461,23 +465,25 @@ button {
     margin-bottom: 0;
 }
 
-.parent-name {
+.parent-names {
     font-weight: 500;
     color: var(--color-primary);
     font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 .relation {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--color-text-light);
     font-weight: 300;
+    white-space: nowrap;
 }
 
 .child-name {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-primary);
     font-size: 1.05rem;
-    margin-left: 4px;
+    white-space: nowrap;
 }
 
 .deceased {
