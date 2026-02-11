@@ -526,8 +526,8 @@ function initShareButtons() {
                     {
                         title: '위치보기',
                         link: {
-                            mobileWebUrl: 'https://map.naver.com/search/씨마크호텔',
-                            webUrl: 'https://map.naver.com/search/씨마크호텔'
+                            mobileWebUrl: 'https://map.naver.com/v5/search/강원특별자치도%20강릉시%20해안로406번길%202%20씨마크호텔',
+                            webUrl: 'https://map.naver.com/v5/search/강원특별자치도%20강릉시%20해안로406번길%202%20씨마크호텔'
                         }
                     }
                 ]
