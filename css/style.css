@@ -487,12 +487,17 @@ button {
     white-space: nowrap;
 }
 
+.deceased-spacer {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
 .deceased {
     display: inline-block;
     width: 18px;
     height: 18px;
-    margin-right: 0;
-    vertical-align: middle;
     flex-shrink: 0;
     background-image: url('../icons/flower.png');
     background-size: contain;
