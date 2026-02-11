@@ -501,6 +501,7 @@ function initShareButtons() {
     // 카카오톡 공유 (카카오 SDK 초기화 필요)
     kakaoShareBtn.addEventListener('click', () => {
         if (typeof Kakao !== 'undefined' && Kakao.isInitialized()) {
+            var invitationUrl = 'https://heejunparkk.github.io/wedding-invitation/';
             Kakao.Share.sendDefault({
                 objectType: 'feed',
                 content: {
@@ -510,16 +511,16 @@ function initShareButtons() {
                     imageWidth: 793,
                     imageHeight: 990,
                     link: {
-                        mobileWebUrl: window.location.href,
-                        webUrl: window.location.href
+                        mobileWebUrl: invitationUrl,
+                        webUrl: invitationUrl
                     }
                 },
                 buttons: [
                     {
                         title: '모바일청첩장',
                         link: {
-                            mobileWebUrl: window.location.href,
-                            webUrl: window.location.href
+                            mobileWebUrl: invitationUrl,
+                            webUrl: invitationUrl
                         }
                     },
                     {
