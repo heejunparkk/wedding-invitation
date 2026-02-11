@@ -53,6 +53,7 @@ html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     background-color: #f0ede9;
+    overflow-x: hidden;
 }
 
 body {
@@ -62,7 +63,6 @@ body {
     background-color: var(--color-bg);
     line-height: 1.8;
     letter-spacing: -0.01em;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     max-width: 480px;
@@ -258,12 +258,14 @@ button {
     overflow: hidden;
 }
 
-/* Cover Background Image */
+/* Fixed Background Image */
 .cover-bg-fixed {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 480px;
     height: 100%;
     background-image: url('../images/main.jpg');
     background-size: cover;
