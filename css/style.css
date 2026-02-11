@@ -150,7 +150,7 @@ button {
 .music-control {
     position: fixed;
     top: 20px;
-    right: 20px;
+    right: calc(50% - 240px + 20px);
     width: 32px;
     height: 32px;
     border-radius: var(--radius-full);
@@ -1286,6 +1286,12 @@ button {
 /* =====================================================
    Responsive
    ===================================================== */
+@media (max-width: 480px) {
+    .music-control {
+        right: 20px;
+    }
+}
+
 @media (max-width: 375px) {
     html {
         font-size: 16px;
