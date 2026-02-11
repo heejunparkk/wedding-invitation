@@ -54,6 +54,7 @@ html {
     -webkit-text-size-adjust: 100%;
     background-color: #f0ede9;
     overflow-x: hidden;
+    height: -webkit-fill-available;
 }
 
 body {
@@ -67,6 +68,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     max-width: 480px;
     margin: 0 auto;
+    overflow-x: hidden;
 }
 
 img {
@@ -266,7 +268,7 @@ button {
     transform: translateX(-50%);
     width: 100%;
     max-width: 480px;
-    height: 100%;
+    height: 100svh;
     background-image: url('../images/main.jpg');
     background-size: cover;
     background-position: center;
@@ -737,7 +739,7 @@ button {
 
 .modal-content {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     position: relative;
 }
@@ -774,7 +776,7 @@ button {
 
 .carousel-slide img {
     max-width: calc(100vw - 40px);
-    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
     width: auto;
     height: auto;
     object-fit: contain;
@@ -1443,7 +1445,7 @@ button {
     }
     100% {
         opacity: 0;
-        transform: translateY(100vh) translateX(50px) rotate(360deg) scale(0.6);
+        transform: translateY(100svh) translateX(50px) rotate(360deg) scale(0.6);
     }
 }
 
