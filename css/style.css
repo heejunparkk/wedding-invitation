@@ -477,16 +477,16 @@ button {
     font-size: 0.78rem;
     color: var(--color-text-light);
     font-weight: 300;
-    margin-left: 6px;
+    margin: 0 6px;
 }
 
 .relation-role {
     font-size: 0.78rem;
     color: var(--color-text-light);
     font-weight: 300;
-    width: 24px;
-    text-align: center;
-    margin-right: 4px;
+    width: 26px;
+    text-align: right;
+    margin-right: 6px;
 }
 
 .child-name {
