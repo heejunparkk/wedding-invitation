@@ -52,6 +52,7 @@ html {
     font-size: 18px;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    background-color: #f0ede9;
 }
 
 body {
@@ -64,6 +65,8 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    max-width: 480px;
+    margin: 0 auto;
 }
 
 img {
@@ -259,8 +262,10 @@ button {
 .cover-bg-fixed {
     position: fixed;
     top: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 480px;
     height: 100%;
     background-image: url('../images/main.jpg');
     background-size: cover;
