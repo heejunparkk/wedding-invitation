@@ -528,13 +528,6 @@ function initShareButtons() {
                             mobileWebUrl: invitationUrl,
                             webUrl: invitationUrl
                         }
-                    },
-                    {
-                        title: '위치보기',
-                        link: {
-                            mobileWebUrl: 'https://map.kakao.com/?map_type=TYPE_MAP&q=강원특별자치도+강릉시+해안로406번길+2+씨마크호텔',
-                            webUrl: 'https://map.kakao.com/?map_type=TYPE_MAP&q=강원특별자치도+강릉시+해안로406번길+2+씨마크호텔'
-                        }
                     }
                 ]
             });
