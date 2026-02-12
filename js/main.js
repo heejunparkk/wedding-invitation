@@ -258,14 +258,10 @@ function initGallery() {
         currentIndexEl.textContent = currentIndex + 1;
     }
 
-    var scrollY = 0;
-
     function openModal(index) {
         currentIndex = index;
-        scrollY = window.scrollY;
-        document.body.style.position = 'fixed';
-        document.body.style.top = '-' + scrollY + 'px';
-        document.body.style.width = '100%';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
         modal.style.display = 'flex';
         // 강제 리플로우 후 애니메이션 시작
         modal.offsetHeight;
@@ -278,10 +274,8 @@ function initGallery() {
         setTimeout(() => {
             modal.style.display = 'none';
         }, 300);
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        window.scrollTo(0, scrollY);
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
     }
 
     function showPrev() {
@@ -621,22 +615,45 @@ function initKakaoMap() {
 }
 
 /**
- * RSVP - 참석 의사 전달
+ * RSVP - 참석 의사 전달 (모달)
  */
 function initRSVP() {
     var form = document.getElementById('rsvpForm');
-    var countField = document.getElementById('rsvpCountField');
     var mealField = document.getElementById('rsvpMealField');
     var attendRadios = form.querySelectorAll('input[name="attend"]');
+    var openBtn = document.getElementById('rsvpOpenBtn');
+    var modal = document.getElementById('rsvpModal');
+    var modalOverlay = document.getElementById('rsvpModalOverlay');
+    var modalClose = document.getElementById('rsvpModalClose');
 
-    // 참석/미참석에 따라 인원수, 식사 필드 표시/숨김
+    function openRsvpModal() {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+        modal.classList.add('active');
+        // 강제 리플로우 후 애니메이션
+        modal.offsetHeight;
+        modal.classList.add('show');
+    }
+
+    function closeRsvpModal() {
+        modal.classList.remove('show');
+        setTimeout(function() {
+            modal.classList.remove('active');
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        }, 300);
+    }
+
+    openBtn.addEventListener('click', openRsvpModal);
+    modalOverlay.addEventListener('click', closeRsvpModal);
+    modalClose.addEventListener('click', closeRsvpModal);
+
+    // 참석/미참석에 따라 식사 필드 표시/숨김
     attendRadios.forEach(function(radio) {
         radio.addEventListener('change', function() {
             if (this.value === '미참석') {
-                countField.style.display = 'none';
                 mealField.style.display = 'none';
             } else {
-                countField.style.display = 'flex';
                 mealField.style.display = 'flex';
             }
         });
@@ -661,7 +678,7 @@ function initRSVP() {
         var data = {
             name: name,
             attend: attend.value,
-            count: attend.value === '참석' ? document.getElementById('rsvpCount').value : '-',
+            count: '-',
             meal: attend.value === '참석' ? form.querySelector('input[name="meal"]:checked').value : '-'
         };
 
@@ -676,10 +693,10 @@ function initRSVP() {
         }).then(function() {
             showToast('참석 의사가 전달되었습니다. 감사합니다!');
             form.reset();
-            countField.style.display = 'flex';
             mealField.style.display = 'flex';
             submitBtn.disabled = false;
             submitBtn.textContent = '전달하기';
+            closeRsvpModal();
         }).catch(function() {
             showToast('전송에 실패했습니다. 다시 시도해주세요.');
             submitBtn.disabled = false;
