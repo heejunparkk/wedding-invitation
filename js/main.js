@@ -532,8 +532,8 @@ function initShareButtons() {
                     {
                         title: '위치보기',
                         link: {
-                            mobileWebUrl: 'https://map.kakao.com/link/map/씨마크호텔,37.7980351,128.9151714',
-                            webUrl: 'https://map.kakao.com/link/map/씨마크호텔,37.7980351,128.9151714'
+                            mobileWebUrl: 'https://map.kakao.com/?map_type=TYPE_MAP&q=강원특별자치도+강릉시+해안로406번길+2+씨마크호텔',
+                            webUrl: 'https://map.kakao.com/?map_type=TYPE_MAP&q=강원특별자치도+강릉시+해안로406번길+2+씨마크호텔'
                         }
                     }
                 ]
