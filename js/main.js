@@ -688,7 +688,7 @@ function initRSVP() {
         fetch('https://script.google.com/macros/s/AKfycbyGo7KW2QENoBNQ6b6c3Yk5Dbb9yWsxseu5N2qhh6j7Uyqj2qzLjDBLmK11VlsXPfEpZQ/exec', {
             method: 'POST',
             mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(data)
         }).then(function() {
             showToast('참석 의사가 전달되었습니다. 감사합니다!');
