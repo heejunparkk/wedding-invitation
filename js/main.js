@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMusicControl();
     initShareButtons();
     initKakaoMap();
+    initRSVP();
 });
 
 /**
@@ -617,6 +618,74 @@ function initKakaoMap() {
             </div>
         `;
     }
+}
+
+/**
+ * RSVP - 참석 의사 전달
+ */
+function initRSVP() {
+    var form = document.getElementById('rsvpForm');
+    var countField = document.getElementById('rsvpCountField');
+    var mealField = document.getElementById('rsvpMealField');
+    var attendRadios = form.querySelectorAll('input[name="attend"]');
+
+    // 참석/미참석에 따라 인원수, 식사 필드 표시/숨김
+    attendRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            if (this.value === '미참석') {
+                countField.style.display = 'none';
+                mealField.style.display = 'none';
+            } else {
+                countField.style.display = 'flex';
+                mealField.style.display = 'flex';
+            }
+        });
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var submitBtn = document.getElementById('rsvpSubmit');
+        var name = document.getElementById('rsvpName').value.trim();
+        var attend = form.querySelector('input[name="attend"]:checked');
+
+        if (!name) {
+            showToast('이름을 입력해주세요.');
+            return;
+        }
+        if (!attend) {
+            showToast('참석 여부를 선택해주세요.');
+            return;
+        }
+
+        var data = {
+            name: name,
+            attend: attend.value,
+            count: attend.value === '참석' ? document.getElementById('rsvpCount').value : '-',
+            meal: attend.value === '참석' ? form.querySelector('input[name="meal"]:checked').value : '-'
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = '전송 중...';
+
+        fetch('https://script.google.com/macros/s/AKfycbyGo7KW2QENoBNQ6b6c3Yk5Dbb9yWsxseu5N2qhh6j7Uyqj2qzLjDBLmK11VlsXPfEpZQ/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(function() {
+            showToast('참석 의사가 전달되었습니다. 감사합니다!');
+            form.reset();
+            countField.style.display = 'flex';
+            mealField.style.display = 'flex';
+            submitBtn.disabled = false;
+            submitBtn.textContent = '전달하기';
+        }).catch(function() {
+            showToast('전송에 실패했습니다. 다시 시도해주세요.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = '전달하기';
+        });
+    });
 }
 
 /**
