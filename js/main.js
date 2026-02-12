@@ -257,14 +257,19 @@ function initGallery() {
         currentIndexEl.textContent = currentIndex + 1;
     }
 
+    var scrollY = 0;
+
     function openModal(index) {
         currentIndex = index;
+        scrollY = window.scrollY;
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + scrollY + 'px';
+        document.body.style.width = '100%';
         modal.style.display = 'flex';
         // 강제 리플로우 후 애니메이션 시작
         modal.offsetHeight;
         modal.classList.add('active');
         updateCarousel(false);
-        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
@@ -272,7 +277,10 @@ function initGallery() {
         setTimeout(() => {
             modal.style.display = 'none';
         }, 300);
-        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        window.scrollTo(0, scrollY);
     }
 
     function showPrev() {
