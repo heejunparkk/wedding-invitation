@@ -110,7 +110,7 @@ function initScrollAnimation() {
                                     line.classList.add('visible');
                                 }, lineIndex * 80);
                             });
-                        }, index * 150);
+                        }, index * 180);
                     });
                 }
                 itemObserver.unobserve(entry.target);
